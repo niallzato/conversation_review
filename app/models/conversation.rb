@@ -3,7 +3,7 @@ class Conversation < ActiveRecord::Base
   has_many :tags
   belongs_to :admin
 
-  validates :conversation_part_id, presence: true
   validates :intercom_id, presence: true
+  validates :admin_id, presence: true
 
 end
