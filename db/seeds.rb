@@ -9,12 +9,12 @@ intercom = Intercom::Client.new(token: ENV['intercom_token'])
 
 # populate admins
 intercom.admins.all.each do |admin|
-  Admin.create(intercom_id: admin.id, name: admin.name, email: admin.email)
+  Admin.create_with(name: admin.name, email: admin.email).find_or_create_by(intercom_id: admin.id)
 end
 
 # populate tags
 intercom.tags.all.each do |tag|
-  Tag.create(intercom_id: tag.id, name: tag.name)
+  Tag.create_with(name: tag.name).find_or_create_by(intercom_id: tag.id)
 end
 
 
@@ -22,9 +22,9 @@ end
 count = 0
 intercom.conversations.all.each do |conv|
   if ConversationHelper.valid?(conv)
-    Conversation.create(intercom_id: conv.id, admin_id: conv.assignee.id)
+    Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
     conv.conversation_parts.each do |part|
-      ConversationPart.create(intercom_id: part.id, conversation_id: conv.id, body: part.body)
+      ConversationPart.create_with(conversation_id: conv.id, body: part.body).find_or_create_by(intercom_id: part.id)
     end
     count += 1
     if count > 100
