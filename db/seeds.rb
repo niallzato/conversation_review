@@ -17,10 +17,10 @@ intercom.tags.all.each do |tag|
   Tag.create_with(name: tag.name).find_or_create_by(intercom_id: tag.id)
 end
 
-
 # populate conversations
 count = 0
 intercom.conversations.all.each do |conv|
+  conv = ConversationHelper.singleConversation(conv.id)
   if ConversationHelper.valid?(conv)
     Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
     conv.conversation_parts.each do |part|

@@ -14,7 +14,6 @@ module ConversationHelper
   end
 
   def self.ignoredTag?(conversation)
-    conversation = singleConversation(conversation.id)
     conversation.tags.each do |tag|
       unless Tag.where(name: tag.name, ignore: true).empty?
         return false
