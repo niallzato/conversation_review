@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190208164122) do
+ActiveRecord::Schema.define(version: 20190214174216) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 20190208164122) do
     t.integer  "conversation_id",           null: false
     t.integer  "intercom_id",     limit: 8, null: false
     t.text     "body"
+    t.integer  "author_id",       limit: 8
+    t.string   "author_type"
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -42,18 +44,12 @@ ActiveRecord::Schema.define(version: 20190208164122) do
     t.integer  "intercom_id", limit: 8,                 null: false
     t.boolean  "reviewed",              default: false
     t.integer  "admin_id"
+    t.integer  "author_id",   limit: 8
+    t.string   "author_type"
   end
 
-  create_table "reviews", force: :cascade do |t|
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "conversation_id"
-    t.boolean  "reviewed"
-    t.integer  "tone"
-    t.integer  "quality"
-    t.boolean  "fip"
-    t.text     "notes"
-  end
+# Could not dump table "reviews" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "tags", force: :cascade do |t|
     t.datetime "created_at",            null: false

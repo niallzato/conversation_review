@@ -1,5 +1,4 @@
 module ConversationHelper
-  require 'pry'
 
   MIN_PARTS = 5
 

@@ -48,3 +48,5 @@ end
 
 
 gem "intercom", "~> 3.7"
+gem 'bootstrap'
+gem 'jquery-rails'

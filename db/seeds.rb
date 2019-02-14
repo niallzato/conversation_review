@@ -22,14 +22,15 @@ count = 0
 intercom.conversations.all.each do |conv|
   conv = ConversationHelper.singleConversation(conv.id)
   if ConversationHelper.valid?(conv)
-    Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
+    db_conv = Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
+    ConversationPart.create_with(conversation_id: db_conv.id, body: conv.conversation_message.body, author_id: conv.conversation_message.author.id, author_type: conv.conversation_message.author.type ).find_or_create_by(intercom_id: conv.conversation_message.id)
     conv.conversation_parts.each do |part|
-      ConversationPart.create_with(conversation_id: conv.id, body: part.body).find_or_create_by(intercom_id: part.id)
+      ConversationPart.create_with(conversation_id: db_conv.id, body: part.body, author_id: part.author.id, author_type: part.author.type).find_or_create_by(intercom_id: part.id)
     end
     count += 1
-    if count > 100
-      break
-    end
+  end
+  if count > 100
+    break
   end
 end
 
