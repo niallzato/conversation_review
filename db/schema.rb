@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190214174216) do
+ActiveRecord::Schema.define(version: 20190215172121) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20190214174216) do
     t.text     "body"
     t.integer  "author_id",       limit: 8
     t.string   "author_type"
+    t.string   "part_type"
   end
 
   create_table "conversations", force: :cascade do |t|

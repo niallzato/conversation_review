@@ -1,0 +1,27 @@
+<div>
+  <p><%= @review.conversation_id %></p>
+</div>
+
+<div>
+  <% @review.conversation.conversation_parts.each do |part| %>
+    <p class= <%= conversation_render_side(part.author_id) %> >
+      <%= part.body.html_safe %>
+    </p>
+  <% end %>
+</div>
+
+<%= form_for @review do |r| %>
+  <%= r.label :tone %>:
+  <%= r.text_field :tone %><br />
+
+  <%= r.label :quality %>:
+  <%= r.text_field :quality %><br />
+
+  <%= r.label :fip %>:
+  <%= r.text_field :fip %><br />
+
+  <%= r.label :notes %>:
+  <%= r.text_field :notes %><br />
+
+  <%= r.submit %>
+<% end %>

@@ -1,7 +1,8 @@
 class ReviewController < ApplicationController
 
   def index
-    @reviews = Review.all
+    @review = reviewing
+    binding.pry
   end
 
   def show
@@ -9,10 +10,11 @@ class ReviewController < ApplicationController
   end
 
   def pull
-    to_review = Conversation.find_by(reviewed: false).first
+    to_review = Conversation.where(reviewed: false).first
     to_review.reviewed = true
     to_review.save
-    
+    review = Review.create(conversation_id: to_review.id, reviewed: false, assigned: 76)
+    review.save
   end
 
   def save_review
@@ -28,8 +30,13 @@ class ReviewController < ApplicationController
     true
   end
 
-  def review_assigend
+  def assigned_review
+    Review.where(assigned: 76, reviewed: false).first
+  end
 
+  def reviewing
+    return assigned_review unless assigned_review.blank?
+    pull
   end
 
 end
