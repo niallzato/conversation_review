@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190215172121) do
+ActiveRecord::Schema.define(version: 20190218132127) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at",  null: false
@@ -20,6 +20,19 @@ ActiveRecord::Schema.define(version: 20190215172121) do
     t.string   "email",       null: false
     t.integer  "intercom_id", null: false
   end
+
+  create_table "attachments", force: :cascade do |t|
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "part_id",      limit: 8, null: false
+    t.text     "type"
+    t.text     "content_type"
+    t.text     "name"
+    t.text     "url"
+    t.integer  "filesize",     limit: 8, null: false
+  end
+
+  add_index "attachments", ["part_id", "url"], name: "index_attachments_on_part_id_and_url", unique: true
 
   create_table "comments", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -37,6 +50,7 @@ ActiveRecord::Schema.define(version: 20190215172121) do
     t.integer  "author_id",       limit: 8
     t.string   "author_type"
     t.string   "part_type"
+    t.integer  "created",         limit: 8
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -45,8 +59,6 @@ ActiveRecord::Schema.define(version: 20190215172121) do
     t.integer  "intercom_id", limit: 8,                 null: false
     t.boolean  "reviewed",              default: false
     t.integer  "admin_id"
-    t.integer  "author_id",   limit: 8
-    t.string   "author_type"
   end
 
 # Could not dump table "reviews" because of following NoMethodError

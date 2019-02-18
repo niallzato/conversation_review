@@ -56,5 +56,8 @@ Rails.application.routes.draw do
   #
   resources :admin
   resources :review
+  post "review/submit"
+
+
 
 end

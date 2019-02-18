@@ -7,6 +7,15 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 intercom = Intercom::Client.new(token: ENV['intercom_token'])
 
+
+#populate attachements
+def populate_attachments(attachments, part_id)
+  attachments.each do |attachment|
+    Attachment.create_with(url: attachment.url, name: attachment.name, type: attachment.type, content_type: attachment.contnet_type, part_id: part_id)
+  end
+end
+
+
 # populate admins
 intercom.admins.all.each do |admin|
   Admin.create_with(name: admin.name, email: admin.email).find_or_create_by(intercom_id: admin.id)
@@ -23,9 +32,11 @@ intercom.conversations.all.each do |conv|
   conv = ConversationHelper.singleConversation(conv.id)
   if ConversationHelper.valid?(conv)
     db_conv = Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
-    ConversationPart.create_with(conversation_id: db_conv.id, body: conv.conversation_message.body, author_id: conv.conversation_message.author.id, author_type: conv.conversation_message.author.type, part_type: conv.conversation_message.type ).find_or_create_by(intercom_id: conv.conversation_message.id)
+    part = ConversationPart.create_with(conversation_id: db_conv.id, body: conv.conversation_message.body, author_id: conv.conversation_message.author.id, author_type: conv.conversation_message.author.type, part_type: conv.conversation_message.type ).find_or_create_by(intercom_id: conv.conversation_message.id)
+    populate_attachments(conv.attachments, part.id)
     conv.conversation_parts.each do |part|
-      ConversationPart.create_with(conversation_id: db_conv.id, body: part.body, author_id: part.author.id, author_type: part.author.type, part_type: part.part_type).find_or_create_by(intercom_id: part.id)
+      c_part = ConversationPart.create_with(conversation_id: db_conv.id, body: part.body, author_id: part.author.id, author_type: part.author.type, part_type: part.part_type).find_or_create_by(intercom_id: part.id)
+      populate_attachments(part.attachments, c_part.id)
     end
     count += 1
   end
@@ -33,5 +44,4 @@ intercom.conversations.all.each do |conv|
     break
   end
 end
-
 

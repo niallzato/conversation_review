@@ -2,7 +2,6 @@ class ReviewController < ApplicationController
 
   def index
     @review = reviewing
-    binding.pry
   end
 
   def show
@@ -15,6 +14,7 @@ class ReviewController < ApplicationController
     to_review.save
     review = Review.create(conversation_id: to_review.id, reviewed: false, assigned: 76)
     review.save
+    review
   end
 
   def save_review
@@ -37,6 +37,17 @@ class ReviewController < ApplicationController
   def reviewing
     return assigned_review unless assigned_review.blank?
     pull
+  end
+
+  def submit
+    scrubbed_params = validation(params["review"])
+    review = Review.update(scrubbed_params["id"], reviewed: true, tone: scrubbed_params["tone"], quality: scrubbed_params["quality"], fip: scrubbed_params["fip"], notes: scrubbed_params["notes"])
+    review.save
+    redirect_to request.referrer
+  end
+
+  def validation(params)
+    params
   end
 
 end
