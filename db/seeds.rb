@@ -33,7 +33,7 @@ intercom.conversations.all.each do |conv|
   if ConversationHelper.valid?(conv)
     db_conv = Conversation.create_with(admin_id: conv.assignee.id).find_or_create_by(intercom_id: conv.id)
     part = ConversationPart.create_with(conversation_id: db_conv.id, body: conv.conversation_message.body, author_id: conv.conversation_message.author.id, author_type: conv.conversation_message.author.type, part_type: conv.conversation_message.type ).find_or_create_by(intercom_id: conv.conversation_message.id)
-    populate_attachments(conv.attachments, part.id)
+    populate_attachments(conv.conversation_message.attachments, part.id)
     conv.conversation_parts.each do |part|
       c_part = ConversationPart.create_with(conversation_id: db_conv.id, body: part.body, author_id: part.author.id, author_type: part.author.type, part_type: part.part_type).find_or_create_by(intercom_id: part.id)
       populate_attachments(part.attachments, c_part.id)
