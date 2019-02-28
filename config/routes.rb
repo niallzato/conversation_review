@@ -54,10 +54,14 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   #
-  resources :admin
-  resources :review
+
+  get "admin/:id/reviews", to: "admin#reviews_by_admin"
+  get "admin/:id/reviewed", to: "admin#reviewd_by_admin"
   post "review/submit"
 
 
+  resources :admin
+  resources :tag
+  resources :review
 
 end

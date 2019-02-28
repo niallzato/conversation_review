@@ -50,4 +50,12 @@ class ReviewController < ApplicationController
     params
   end
 
+  # def my_reviews
+  #   @reviews = Review.joins(:conversation).where(reviewed: true, conversations: {admin_id: 2627767})
+  # end
+  #
+  # def my_reviewed
+  #   @reviews = Review.where(reviewed: true, assigned: 76)
+  # end
+
 end
