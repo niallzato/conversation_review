@@ -7,11 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 intercom = Intercom::Client.new(token: ENV['intercom_token'])
 
-
 #populate attachements
 def populate_attachments(attachments, part_id)
   attachments.each do |attachment|
-    Attachment.create_with(url: attachment.url, name: attachment.name, type: attachment.type, content_type: attachment.contnet_type, part_id: part_id)
+    Attachment.create_with(url: attachment["url"], name: attachment["name"], type: attachment["type"], content_type: attachment["contnet_type"], part_id: part_id)
   end
 end
 
