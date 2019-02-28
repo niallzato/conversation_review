@@ -14,7 +14,6 @@ def populate_attachments(attachments, part_id)
   end
 end
 
-
 # populate admins
 intercom.admins.all.each do |admin|
   Admin.create_with(name: admin.name, email: admin.email).find_or_create_by(intercom_id: admin.id)

@@ -16,3 +16,5 @@
 !/log/.keep
 /tmp
 /config/app_environment_variables.rb
+
+.idea/workspace.xml

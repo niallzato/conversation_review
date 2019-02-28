@@ -15,6 +15,6 @@ class AdminController < ApplicationController
 
   def reviewed_by_admin
     admin = Admin.find(params[:id])
-    @reviews = Review.joins(:conversation).where(reviewed: true, conversations: {admin_id: admin.intercom_id})
+    @reviews = Review.where(reviewed: true, assigned: admin.id)
   end
 end
